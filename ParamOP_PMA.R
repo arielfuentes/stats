@@ -13,14 +13,13 @@ parPMA <- par[!(par$Servicio == "B51C" | par$Servicio == "B60E" | par$Servicio =
 #rm(par)
 parTNPMA <- parPMA[!(parPMA$Mes == 1 | parPMA$Mes == 2),]
 parTNPMA <- parTNPMA[(parTNPMA$Anho == 2014 | parTNPMA$Anho == 2015 ),]
+parTNPMA$Servicio <- droplevels(parTNPMA$Servicio)
 #########Images
-for (i in parTNPMA$Servicio) {
-  #for (j in parTN$Periodo) {
-    parTNSS <- subset(parTNPMA, Servicio == i & (Periodo == "PMA"))
-    jpeg(filename = paste(i, "TN", "PMA", sep="", ".jpg"), width = 2200, 
-         height = 2000)
-    pairs(~TRX+Prom.ICR+ Capacidad.de.Transporte+KM+PLAZASxKM+Plaza.Teorica+ICT+
-            Plaza.Ofrecida+ICF, data = parTNSS, main = paste(i, "PMA"))
-    dev.off()
-  #}
+a <- split(x = parTNPMA, f = parTNPMA$Servicio)
+for (i in names(a)) {
+  jpeg(filename = paste(i, "TN", "PMA", sep="", ".jpg"), width = 2200, 
+       height = 2000)
+  pairs(~TRX+Prom.ICR+ Capacidad.de.Transporte+KM+PLAZASxKM+Plaza.Teorica+ICT+
+          Plaza.Ofrecida+ICF, data = a[[i]], main = paste(i, "PMA"))
+  dev.off()
 }
