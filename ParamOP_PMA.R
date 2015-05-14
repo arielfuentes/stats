@@ -23,3 +23,10 @@ for (i in names(a)) {
           Plaza.Ofrecida+ICF, data = a[[i]], main = paste(i, "PMA"))
   dev.off()
 }
+###########Multiple Linear Regression to each group
+sapply(a, FUN = function(x) 
+  summary(lm(x[, "TRX"] ~ x[, "Prom.ICR"] + x[, "Capacidad.de.Transporte"] +
+               x[, "PLAZASxKM"]))$coefficients)
+sapply(a, FUN = function(x) 
+  summary(lm(x[, "TRX"] ~ x[, "Prom.ICR"] + x[, "Capacidad.de.Transporte"] +
+               x[, "PLAZASxKM"]))$r.squared)
